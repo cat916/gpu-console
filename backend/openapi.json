@@ -1,0 +1,566 @@
+{
+  "openapi": "3.1.0",
+  "info": {
+    "title": "GPU Console API",
+    "version": "0.1.0"
+  },
+  "paths": {
+    "/api/instance-types": {
+      "get": {
+        "summary": "List Instance Types",
+        "operationId": "list_instance_types_api_instance_types_get",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "items": {
+                    "$ref": "#/components/schemas/InstanceType"
+                  },
+                  "type": "array",
+                  "title": "Response List Instance Types Api Instance Types Get"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/images": {
+      "get": {
+        "summary": "List Images",
+        "operationId": "list_images_api_images_get",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "items": {
+                    "$ref": "#/components/schemas/Image"
+                  },
+                  "type": "array",
+                  "title": "Response List Images Api Images Get"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/instances": {
+      "get": {
+        "summary": "List Instances",
+        "operationId": "list_instances_api_instances_get",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "items": {
+                    "$ref": "#/components/schemas/Instance"
+                  },
+                  "type": "array",
+                  "title": "Response List Instances Api Instances Get"
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "summary": "Create Instance",
+        "operationId": "create_instance_api_instances_post",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateInstanceRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "202": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Instance"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Conflict",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Unprocessable Entity",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/instances/{instance_id}": {
+      "get": {
+        "summary": "Get Instance",
+        "operationId": "get_instance_api_instances__instance_id__get",
+        "parameters": [
+          {
+            "name": "instance_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Instance Id"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Instance"
+                }
+              }
+            }
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            },
+            "description": "Not Found"
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "summary": "Delete Instance",
+        "operationId": "delete_instance_api_instances__instance_id__delete",
+        "parameters": [
+          {
+            "name": "instance_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Instance Id"
+            }
+          }
+        ],
+        "responses": {
+          "202": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Instance"
+                }
+              }
+            }
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            },
+            "description": "Not Found"
+          },
+          "409": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            },
+            "description": "Conflict"
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/dns/records": {
+      "get": {
+        "summary": "List Dns Records",
+        "operationId": "list_dns_records_api_dns_records_get",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "items": {
+                    "$ref": "#/components/schemas/DnsRecord"
+                  },
+                  "type": "array",
+                  "title": "Response List Dns Records Api Dns Records Get"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/healthz": {
+      "get": {
+        "summary": "Healthz",
+        "operationId": "healthz_healthz_get",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "additionalProperties": {
+                    "type": "string"
+                  },
+                  "type": "object",
+                  "title": "Response Healthz Healthz Get"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "CreateInstanceRequest": {
+        "properties": {
+          "name": {
+            "type": "string",
+            "maxLength": 63,
+            "minLength": 1,
+            "title": "Name"
+          },
+          "instance_type": {
+            "type": "string",
+            "title": "Instance Type"
+          },
+          "image": {
+            "type": "string",
+            "title": "Image"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "name",
+          "instance_type",
+          "image"
+        ],
+        "title": "CreateInstanceRequest"
+      },
+      "DnsRecord": {
+        "properties": {
+          "name": {
+            "type": "string",
+            "title": "Name"
+          },
+          "type": {
+            "type": "string",
+            "const": "A",
+            "title": "Type",
+            "default": "A"
+          },
+          "value": {
+            "type": "string",
+            "title": "Value"
+          },
+          "ttl": {
+            "type": "integer",
+            "title": "Ttl"
+          }
+        },
+        "type": "object",
+        "required": [
+          "name",
+          "value",
+          "ttl"
+        ],
+        "title": "DnsRecord"
+      },
+      "ErrorDetail": {
+        "properties": {
+          "code": {
+            "type": "string",
+            "title": "Code"
+          },
+          "message": {
+            "type": "string",
+            "title": "Message"
+          },
+          "fields": {
+            "items": {
+              "$ref": "#/components/schemas/FieldError"
+            },
+            "type": "array",
+            "title": "Fields",
+            "default": []
+          }
+        },
+        "type": "object",
+        "required": [
+          "code",
+          "message"
+        ],
+        "title": "ErrorDetail"
+      },
+      "ErrorResponse": {
+        "properties": {
+          "error": {
+            "$ref": "#/components/schemas/ErrorDetail"
+          }
+        },
+        "type": "object",
+        "required": [
+          "error"
+        ],
+        "title": "ErrorResponse"
+      },
+      "FieldError": {
+        "properties": {
+          "field": {
+            "type": "string",
+            "title": "Field"
+          },
+          "message": {
+            "type": "string",
+            "title": "Message"
+          }
+        },
+        "type": "object",
+        "required": [
+          "field",
+          "message"
+        ],
+        "title": "FieldError"
+      },
+      "HTTPValidationError": {
+        "properties": {
+          "detail": {
+            "items": {
+              "$ref": "#/components/schemas/ValidationError"
+            },
+            "type": "array",
+            "title": "Detail"
+          }
+        },
+        "type": "object",
+        "title": "HTTPValidationError"
+      },
+      "Image": {
+        "properties": {
+          "id": {
+            "type": "string",
+            "title": "Id"
+          },
+          "name": {
+            "type": "string",
+            "title": "Name"
+          }
+        },
+        "type": "object",
+        "required": [
+          "id",
+          "name"
+        ],
+        "title": "Image"
+      },
+      "Instance": {
+        "properties": {
+          "id": {
+            "type": "string",
+            "title": "Id"
+          },
+          "name": {
+            "type": "string",
+            "title": "Name"
+          },
+          "hostname": {
+            "type": "string",
+            "title": "Hostname"
+          },
+          "instance_type": {
+            "type": "string",
+            "title": "Instance Type"
+          },
+          "image": {
+            "type": "string",
+            "title": "Image"
+          },
+          "status": {
+            "$ref": "#/components/schemas/InstanceStatus"
+          },
+          "ip": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Ip"
+          },
+          "created_at": {
+            "type": "string",
+            "format": "date-time",
+            "title": "Created At"
+          },
+          "updated_at": {
+            "type": "string",
+            "format": "date-time",
+            "title": "Updated At"
+          }
+        },
+        "type": "object",
+        "required": [
+          "id",
+          "name",
+          "hostname",
+          "instance_type",
+          "image",
+          "status",
+          "ip",
+          "created_at",
+          "updated_at"
+        ],
+        "title": "Instance"
+      },
+      "InstanceStatus": {
+        "type": "string",
+        "enum": [
+          "provisioning",
+          "running",
+          "error",
+          "deleting"
+        ],
+        "title": "InstanceStatus"
+      },
+      "InstanceType": {
+        "properties": {
+          "id": {
+            "type": "string",
+            "title": "Id"
+          },
+          "gpu_model": {
+            "type": "string",
+            "title": "Gpu Model"
+          },
+          "gpu_count": {
+            "type": "integer",
+            "title": "Gpu Count"
+          },
+          "vcpus": {
+            "type": "integer",
+            "title": "Vcpus"
+          },
+          "memory_gb": {
+            "type": "integer",
+            "title": "Memory Gb"
+          },
+          "price_per_hour": {
+            "type": "number",
+            "title": "Price Per Hour"
+          }
+        },
+        "type": "object",
+        "required": [
+          "id",
+          "gpu_model",
+          "gpu_count",
+          "vcpus",
+          "memory_gb",
+          "price_per_hour"
+        ],
+        "title": "InstanceType"
+      },
+      "ValidationError": {
+        "properties": {
+          "loc": {
+            "items": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "integer"
+                }
+              ]
+            },
+            "type": "array",
+            "title": "Location"
+          },
+          "msg": {
+            "type": "string",
+            "title": "Message"
+          },
+          "type": {
+            "type": "string",
+            "title": "Error Type"
+          },
+          "input": {
+            "title": "Input"
+          },
+          "ctx": {
+            "type": "object",
+            "title": "Context"
+          }
+        },
+        "type": "object",
+        "required": [
+          "loc",
+          "msg",
+          "type"
+        ],
+        "title": "ValidationError"
+      }
+    }
+  }
+}
