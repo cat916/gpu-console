@@ -23,6 +23,7 @@ frontend:
 test:
 	$(BACKEND) pytest
 	$(FRONTEND) typecheck
+	$(FRONTEND) test
 
 lint:
 	$(BACKEND) ruff format --check .
