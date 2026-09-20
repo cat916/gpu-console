@@ -9,7 +9,7 @@
     "typecheck": "tsc -b",
     "lint": "oxlint",
     "preview": "vite preview",
-    "api:types": "npx --yes -p typescript@5.9 -p openapi-typescript@7.13.0 openapi-typescript ../backend/openapi.json -o src/api/schema.ts"
+    "api:types": "openapi-typescript ../backend/openapi.json -o src/api/schema.ts"
   },
   "dependencies": {
     "@emotion/react": "^11.14.0",
@@ -30,6 +30,7 @@
     "@types/react-dom": "^19.2.7",
     "@vitejs/plugin-react": "^6.1.1",
     "jsdom": "^29.1.1",
+    "openapi-typescript": "7.13.0",
     "oxlint": "^1.81.0",
     "typescript": "~6.0.2",
     "vite": "^8.3.0",
