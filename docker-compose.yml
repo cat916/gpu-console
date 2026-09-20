@@ -1,0 +1,37 @@
+name: gpu-console
+
+services:
+  backend:
+    build: ./backend
+    environment:
+      DNS_ZONE: ${DNS_ZONE:-gpu.internal}
+      PROVISION_DELAY_SECONDS: ${PROVISION_DELAY_SECONDS:-5}
+      DEPROVISION_DELAY_SECONDS: ${DEPROVISION_DELAY_SECONDS:-2}
+    ports:
+      - "${BACKEND_PORT:-8001}:8000"
+    healthcheck:
+      test: ["CMD", "python", "-c", "import urllib.request; urllib.request.urlopen('http://127.0.0.1:8000/healthz')"]
+      interval: 5s
+      timeout: 3s
+      retries: 5
+
+  dns:
+    build: ./dns
+    environment:
+      DNS_ZONE: ${DNS_ZONE:-gpu.internal}
+      DNS_PORT: 1053
+      DNS_BIND: 0.0.0.0
+      DNS_RECORDS_URL: http://backend:8000/api/dns/records
+    ports:
+      - "${DNS_PORT:-1053}:1053/udp"
+    depends_on:
+      backend:
+        condition: service_healthy
+
+  frontend:
+    build: ./frontend
+    ports:
+      - "${FRONTEND_PORT:-8080}:80"
+    depends_on:
+      backend:
+        condition: service_healthy

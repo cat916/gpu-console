@@ -11,6 +11,7 @@ use std::time::Duration;
 use zone::{fetch_records, Zone};
 
 const DEFAULT_PORT: u16 = 1053;
+const DEFAULT_BIND: &str = "127.0.0.1";
 const DEFAULT_ZONE: &str = "gpu.internal";
 const DEFAULT_API_URL: &str = "http://127.0.0.1:8000/api/dns/records";
 const DEFAULT_POLL_SECONDS: u64 = 2;
@@ -24,13 +25,14 @@ fn env_or<T: std::str::FromStr>(name: &str, fallback: T) -> T {
 
 fn main() -> std::io::Result<()> {
     let port: u16 = env_or("DNS_PORT", DEFAULT_PORT);
+    let bind_address = env::var("DNS_BIND").unwrap_or_else(|_| DEFAULT_BIND.to_string());
     let zone_suffix = env::var("DNS_ZONE").unwrap_or_else(|_| DEFAULT_ZONE.to_string());
     let api_url = env::var("DNS_RECORDS_URL").unwrap_or_else(|_| DEFAULT_API_URL.to_string());
     let poll_interval = Duration::from_secs(env_or("DNS_POLL_SECONDS", DEFAULT_POLL_SECONDS));
 
     let zone = Arc::new(RwLock::new(Zone::new(&zone_suffix)));
-    let socket = UdpSocket::bind(("127.0.0.1", port))?;
-    println!("Serving {zone_suffix} on 127.0.0.1:{port}, records from {api_url}");
+    let socket = UdpSocket::bind((bind_address.as_str(), port))?;
+    println!("Serving {zone_suffix} on {bind_address}:{port}, records from {api_url}");
 
     let polled_zone = Arc::clone(&zone);
     thread::spawn(move || poll_records(&polled_zone, &api_url, poll_interval));

@@ -32,6 +32,17 @@ reach Running, then resolve its hostname with the `dig` command the detail page 
 
 Ports are overridable: `make dev BACKEND_PORT=8001 DNS_PORT=1054 FRONTEND_PORT=3000`.
 
+### With Docker
+
+```sh
+docker compose up --build
+```
+
+The console is on [localhost:8080](http://localhost:8080), the API on :8001 and DNS on :1053.
+Nginx serves the built frontend and proxies `/api` to the backend, so there is no dev server and
+no proxy target to configure. Override with `FRONTEND_PORT`, `BACKEND_PORT`, `DNS_PORT` or
+`DNS_ZONE`.
+
 ## How it fits together
 
 ```
