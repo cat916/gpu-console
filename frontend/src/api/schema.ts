@@ -48,8 +48,8 @@ export interface paths {
         /** List Instances */
         get: operations["list_instances_api_instances_get"];
         put?: never;
-        /** Create Instance */
-        post: operations["create_instance_api_instances_post"];
+        /** Launch Instance */
+        post: operations["launch_instance_api_instances_post"];
         delete?: never;
         options?: never;
         head?: never;
@@ -112,15 +112,6 @@ export interface paths {
 export type webhooks = Record<string, never>;
 export interface components {
     schemas: {
-        /** CreateInstanceRequest */
-        CreateInstanceRequest: {
-            /** Name */
-            name: string;
-            /** Instance Type */
-            instance_type: string;
-            /** Image */
-            image: string;
-        };
         /** DnsRecord */
         DnsRecord: {
             /** Name */
@@ -185,7 +176,9 @@ export interface components {
             image: string;
             status: components["schemas"]["InstanceStatus"];
             /** Ip */
-            ip: string | null;
+            ip: string;
+            /** Failure Reason */
+            failure_reason: string | null;
             /**
              * Created At
              * Format: date-time
@@ -201,7 +194,7 @@ export interface components {
          * InstanceStatus
          * @enum {string}
          */
-        InstanceStatus: "provisioning" | "running" | "error" | "deleting";
+        InstanceStatus: "provisioning" | "running" | "failed" | "deleting";
         /** InstanceType */
         InstanceType: {
             /** Id */
@@ -216,6 +209,15 @@ export interface components {
             memory_gb: number;
             /** Price Per Hour */
             price_per_hour: number;
+        };
+        /** LaunchInstanceRequest */
+        LaunchInstanceRequest: {
+            /** Name */
+            name: string;
+            /** Instance Type */
+            instance_type: string;
+            /** Image */
+            image: string;
         };
         /** ValidationError */
         ValidationError: {
@@ -299,7 +301,7 @@ export interface operations {
             };
         };
     };
-    create_instance_api_instances_post: {
+    launch_instance_api_instances_post: {
         parameters: {
             query?: never;
             header?: never;
@@ -308,7 +310,7 @@ export interface operations {
         };
         requestBody: {
             content: {
-                "application/json": components["schemas"]["CreateInstanceRequest"];
+                "application/json": components["schemas"]["LaunchInstanceRequest"];
             };
         };
         responses: {

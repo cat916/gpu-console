@@ -24,7 +24,7 @@ InstanceName = Annotated[str, Field(min_length=1, max_length=63), AfterValidator
 class InstanceStatus(StrEnum):
     PROVISIONING = "provisioning"
     RUNNING = "running"
-    ERROR = "error"
+    FAILED = "failed"
     DELETING = "deleting"
 
 
@@ -42,7 +42,7 @@ class Image(BaseModel):
     name: str
 
 
-class CreateInstanceRequest(BaseModel):
+class LaunchInstanceRequest(BaseModel):
     model_config = ConfigDict(extra="forbid")
 
     name: InstanceName
@@ -57,7 +57,8 @@ class Instance(BaseModel):
     instance_type: str
     image: str
     status: InstanceStatus
-    ip: str | None
+    ip: str
+    failure_reason: str | None
     created_at: datetime
     updated_at: datetime
 

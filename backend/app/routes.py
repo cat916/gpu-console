@@ -4,12 +4,12 @@ from fastapi import APIRouter, Depends, Request, Response
 
 from app.catalog import IMAGES, INSTANCE_TYPES
 from app.models import (
-    CreateInstanceRequest,
     DnsRecord,
     ErrorResponse,
     Image,
     Instance,
     InstanceType,
+    LaunchInstanceRequest,
 )
 from app.service import InstanceService
 
@@ -43,10 +43,10 @@ async def list_instances(service: InstanceServiceDep) -> list[Instance]:
     status_code=202,
     responses={409: {"model": ErrorResponse}, 422: {"model": ErrorResponse}},
 )
-async def create_instance(
-    body: CreateInstanceRequest, service: InstanceServiceDep, response: Response
+async def launch_instance(
+    body: LaunchInstanceRequest, service: InstanceServiceDep, response: Response
 ) -> Instance:
-    instance = service.create_instance(body)
+    instance = service.launch_instance(body)
     response.headers["Location"] = f"/api/instances/{instance.id}"
     return instance
 

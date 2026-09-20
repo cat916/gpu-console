@@ -1,5 +1,5 @@
 import { request } from './client'
-import type { CreateInstanceRequest, Image, Instance, InstanceType } from './types'
+import type { Image, Instance, InstanceType, LaunchInstanceRequest } from './types'
 
 export function listInstanceTypes(): Promise<InstanceType[]> {
   return request('/api/instance-types')
@@ -17,7 +17,7 @@ export function getInstance(instanceId: string): Promise<Instance> {
   return request(`/api/instances/${encodeURIComponent(instanceId)}`)
 }
 
-export function createInstance(body: CreateInstanceRequest): Promise<Instance> {
+export function launchInstance(body: LaunchInstanceRequest): Promise<Instance> {
   return request('/api/instances', { method: 'POST', json: body })
 }
 

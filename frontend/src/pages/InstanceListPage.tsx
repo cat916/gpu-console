@@ -81,7 +81,7 @@ function InstancesTable({ instances }: { instances: Instance[] }) {
                 <TableCell>
                   <StatusChip status={instance.status} />
                 </TableCell>
-                <TableCell sx={{ fontFamily: MONOSPACE_FONT }}>{instance.ip ?? '—'}</TableCell>
+                <TableCell sx={{ fontFamily: MONOSPACE_FONT }}>{instance.ip}</TableCell>
               </TableRow>
             ))}
           </TableBody>

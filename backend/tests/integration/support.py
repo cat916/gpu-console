@@ -3,7 +3,27 @@ from typing import Any
 
 import httpx
 
+from app.models import Instance
+
 WAIT_TIMEOUT_SECONDS = 2
+
+
+class ProviderCrash(Exception):
+    pass
+
+
+class ControllableProvider:
+    def __init__(self) -> None:
+        self.fail_create = False
+        self.fail_delete = False
+
+    async def create(self, instance: Instance) -> None:
+        if self.fail_create:
+            raise ProviderCrash("create exploded")
+
+    async def delete(self, instance: Instance) -> None:
+        if self.fail_delete:
+            raise ProviderCrash("delete exploded")
 
 
 async def launch(

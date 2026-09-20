@@ -11,7 +11,7 @@ type StatusAppearance = {
 const STATUS_APPEARANCE: Record<InstanceStatus, StatusAppearance> = {
   provisioning: { label: 'Provisioning', color: 'warning', inProgress: true },
   running: { label: 'Running', color: 'success', inProgress: false },
-  error: { label: 'Error', color: 'error', inProgress: false },
+  failed: { label: 'Failed', color: 'error', inProgress: false },
   deleting: { label: 'Deleting', color: 'default', inProgress: true },
 }
 

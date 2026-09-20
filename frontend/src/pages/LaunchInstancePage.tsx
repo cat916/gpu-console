@@ -14,7 +14,7 @@ import Typography from '@mui/material/Typography'
 import { type FormEvent, useState } from 'react'
 import { Link as RouterLink, useNavigate } from 'react-router-dom'
 import type { ApiError } from '../api/client'
-import { useCreateInstance, useImages, useInstanceTypes } from '../api/queries'
+import { useLaunchInstance, useImages, useInstanceTypes } from '../api/queries'
 import type { Image, InstanceType } from '../api/types'
 import { ApiErrorAlert } from '../components/ApiErrorAlert'
 import { BackToInstancesLink } from '../components/BackToInstancesLink'
@@ -58,7 +58,7 @@ type LaunchFormProps = {
 
 function LaunchForm({ instanceTypes, images }: LaunchFormProps) {
   const navigate = useNavigate()
-  const createInstance = useCreateInstance()
+  const launchInstance = useLaunchInstance()
   const [name, setName] = useState('')
   const [nameTouched, setNameTouched] = useState(false)
   const [instanceTypeId, setInstanceTypeId] = useState(instanceTypes[0]?.id ?? '')
@@ -68,8 +68,8 @@ function LaunchForm({ instanceTypes, images }: LaunchFormProps) {
   const nameProblem = instanceNameProblem(name)
   const nameError = serverFieldErrors.name ?? (nameTouched || name.length > 0 ? nameProblem : null)
   const unmappedError =
-    createInstance.error && Object.keys(fieldErrorsFrom(createInstance.error)).length === 0
-      ? createInstance.error
+    launchInstance.error && Object.keys(fieldErrorsFrom(launchInstance.error)).length === 0
+      ? launchInstance.error
       : null
 
   function handleNameChange(value: string) {
@@ -84,7 +84,7 @@ function LaunchForm({ instanceTypes, images }: LaunchFormProps) {
       return
     }
     setServerFieldErrors({})
-    createInstance.mutate(
+    launchInstance.mutate(
       { name, instance_type: instanceTypeId, image: imageId },
       {
         onSuccess: (instance) => void navigate(`/instances/${instance.id}`),
@@ -155,7 +155,7 @@ function LaunchForm({ instanceTypes, images }: LaunchFormProps) {
               <Button component={RouterLink} to="/instances">
                 Cancel
               </Button>
-              <Button type="submit" variant="contained" loading={createInstance.isPending}>
+              <Button type="submit" variant="contained" loading={launchInstance.isPending}>
                 Launch
               </Button>
             </Stack>

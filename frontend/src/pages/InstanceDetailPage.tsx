@@ -105,6 +105,8 @@ function InstanceDetails({ instance }: { instance: Instance }) {
         </Tooltip>
       </Stack>
 
+      {instance.failure_reason && <Alert severity="error">{instance.failure_reason}</Alert>}
+
       <Paper variant="outlined" sx={{ p: { xs: 2, sm: 3 } }}>
         <Box
           component="dl"
@@ -120,7 +122,7 @@ function InstanceDetails({ instance }: { instance: Instance }) {
             {instance.hostname}
           </DetailRow>
           <DetailRow label="IP address" monospace>
-            {instance.ip ?? '—'}
+            {instance.ip}
           </DetailRow>
           <DetailRow label="Type">{instance.instance_type}</DetailRow>
           <DetailRow label="Image">{instance.image}</DetailRow>

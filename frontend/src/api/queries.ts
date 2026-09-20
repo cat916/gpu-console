@@ -1,9 +1,9 @@
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
 import { ApiError } from './client'
 import {
-  createInstance,
   deleteInstance,
   getInstance,
+  launchInstance,
   listImages,
   listInstances,
   listInstanceTypes,
@@ -61,9 +61,9 @@ function useStoreInstance() {
   }
 }
 
-export function useCreateInstance() {
+export function useLaunchInstance() {
   const storeInstance = useStoreInstance()
-  return useMutation({ mutationFn: createInstance, onSuccess: storeInstance })
+  return useMutation({ mutationFn: launchInstance, onSuccess: storeInstance })
 }
 
 export function useDeleteInstance() {

@@ -6,6 +6,7 @@ import httpx
 import pytest
 
 from app.main import create_app
+from app.provider import Provider
 from app.settings import Settings
 
 ClientFactory = Callable[..., Awaitable[httpx.AsyncClient]]
@@ -20,7 +21,9 @@ def anyio_backend() -> str:
 async def make_client() -> AsyncIterator[ClientFactory]:
     async with AsyncExitStack() as stack:
 
-        async def factory(**settings_overrides: Any) -> httpx.AsyncClient:
+        async def factory(
+            provider: Provider | None = None, **settings_overrides: Any
+        ) -> httpx.AsyncClient:
             settings = Settings(
                 **{
                     "provision_delay_seconds": 0,
@@ -28,7 +31,7 @@ async def make_client() -> AsyncIterator[ClientFactory]:
                     **settings_overrides,
                 }
             )
-            app = create_app(settings)
+            app = create_app(settings, provider)
             stack.push_async_callback(app.state.instance_service.close)
             transport = httpx.ASGITransport(app=app)
             return await stack.enter_async_context(

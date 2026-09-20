@@ -34,6 +34,10 @@ def name_taken(name: str) -> ApiError:
     )
 
 
+def network_full() -> ApiError:
+    return ApiError(409, "network_full", "No free IP addresses in the instance network")
+
+
 def invalid_state(instance: Instance, action: str) -> ApiError:
     return ApiError(
         409,

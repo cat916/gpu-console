@@ -71,13 +71,13 @@
         }
       },
       "post": {
-        "summary": "Create Instance",
-        "operationId": "create_instance_api_instances_post",
+        "summary": "Launch Instance",
+        "operationId": "launch_instance_api_instances_post",
         "requestBody": {
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/CreateInstanceRequest"
+                "$ref": "#/components/schemas/LaunchInstanceRequest"
               }
             }
           },
@@ -270,32 +270,6 @@
   },
   "components": {
     "schemas": {
-      "CreateInstanceRequest": {
-        "properties": {
-          "name": {
-            "type": "string",
-            "maxLength": 63,
-            "minLength": 1,
-            "title": "Name"
-          },
-          "instance_type": {
-            "type": "string",
-            "title": "Instance Type"
-          },
-          "image": {
-            "type": "string",
-            "title": "Image"
-          }
-        },
-        "additionalProperties": false,
-        "type": "object",
-        "required": [
-          "name",
-          "instance_type",
-          "image"
-        ],
-        "title": "CreateInstanceRequest"
-      },
       "DnsRecord": {
         "properties": {
           "name": {
@@ -438,6 +412,10 @@
             "$ref": "#/components/schemas/InstanceStatus"
           },
           "ip": {
+            "type": "string",
+            "title": "Ip"
+          },
+          "failure_reason": {
             "anyOf": [
               {
                 "type": "string"
@@ -446,7 +424,7 @@
                 "type": "null"
               }
             ],
-            "title": "Ip"
+            "title": "Failure Reason"
           },
           "created_at": {
             "type": "string",
@@ -468,6 +446,7 @@
           "image",
           "status",
           "ip",
+          "failure_reason",
           "created_at",
           "updated_at"
         ],
@@ -478,7 +457,7 @@
         "enum": [
           "provisioning",
           "running",
-          "error",
+          "failed",
           "deleting"
         ],
         "title": "InstanceStatus"
@@ -520,6 +499,32 @@
           "price_per_hour"
         ],
         "title": "InstanceType"
+      },
+      "LaunchInstanceRequest": {
+        "properties": {
+          "name": {
+            "type": "string",
+            "maxLength": 63,
+            "minLength": 1,
+            "title": "Name"
+          },
+          "instance_type": {
+            "type": "string",
+            "title": "Instance Type"
+          },
+          "image": {
+            "type": "string",
+            "title": "Image"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "name",
+          "instance_type",
+          "image"
+        ],
+        "title": "LaunchInstanceRequest"
       },
       "ValidationError": {
         "properties": {

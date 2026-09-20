@@ -1,6 +1,6 @@
 import type { InstanceStatus, InstanceType } from '../api/types'
 
-export const DELETABLE_STATUSES: ReadonlySet<InstanceStatus> = new Set(['running', 'error'])
+export const DELETABLE_STATUSES: ReadonlySet<InstanceStatus> = new Set(['running', 'failed'])
 
 export function formatGpus(instanceType: InstanceType): string {
   return `${instanceType.gpu_count}× ${instanceType.gpu_model}`

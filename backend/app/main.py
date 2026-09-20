@@ -5,20 +5,24 @@ from fastapi import FastAPI
 
 from app.errors import register_error_handlers
 from app.ip_pool import IpPool
-from app.provider import FakeProvider
+from app.provider import FakeProvider, Provider
 from app.routes import router
 from app.service import InstanceService
 from app.settings import Settings
 
 
-def create_app(settings: Settings | None = None) -> FastAPI:
+def create_app(settings: Settings | None = None, provider: Provider | None = None) -> FastAPI:
     settings = settings or Settings.from_env()
-    provider = FakeProvider(
-        IpPool(settings.instance_network),
+    provider = provider or FakeProvider(
         provision_delay_seconds=settings.provision_delay_seconds,
         deprovision_delay_seconds=settings.deprovision_delay_seconds,
     )
-    service = InstanceService(provider, settings.dns_zone, settings.dns_ttl_seconds)
+    service = InstanceService(
+        provider,
+        IpPool(settings.instance_network),
+        settings.dns_zone,
+        settings.dns_ttl_seconds,
+    )
 
     @asynccontextmanager
     async def lifespan(app: FastAPI) -> AsyncIterator[None]:
