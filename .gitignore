@@ -6,3 +6,4 @@ node_modules/
 dist/
 target/
 .DS_Store
+dns/target/
