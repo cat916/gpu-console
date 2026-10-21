@@ -68,7 +68,7 @@ without waiting. Errors carry a code: `name_taken`, `network_full`, `invalid_sta
 
 ### The DNS server
 
-`dns/` refactors the wire format from [dnsweekend](https://github.com/cat916/dnsweekend), a
+`dns/` refactors the wire format from dnsweekend, a
 recursive resolver built from [Implement DNS in a Weekend](https://implement-dns.wizardzines.com/),
 into an authoritative server for the zone. Parsing had to become fallible, because packets now
 arrive from the network rather than from a root server we chose to query, and name decoding had to
